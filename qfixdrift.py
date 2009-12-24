@@ -1,4 +1,4 @@
-# qundrift.py - refresh applied patches in mq patch queue
+# qfixdrift.py - refresh applied patches in mq patch queue
 #
 # Copyright 2009 L. David Baron <dbaron@dbaron.org> (and contributors to
 # mq.py, from which a few pieces were taken)
@@ -13,7 +13,7 @@ match the diff as they are currently applied.  In other words, it
 updates the applied patches so that they will re-apply without fuzz or
 line offsets.
 
-It provides a single command: qundrift
+It provides a single command: qfixdrift
 '''
 
 from mercurial.i18n import _
@@ -21,7 +21,7 @@ from mercurial.node import bin, short
 from mercurial import util, cmdutil
 from hgext.mq import patchheader
 
-def qundrift(ui, repo, *args, **opts):
+def qfixdrift(ui, repo, *args, **opts):
     """rewrite given patches to clean up patch drift
 
     Rewrite the specified patches so their diff matches the context in
@@ -38,11 +38,11 @@ def qundrift(ui, repo, *args, **opts):
     rev = opts.get('rev')
     if applied:
         if rev:
-            raise util.Abort(_("qundrift requires only one of -a or -r"))
+            raise util.Abort(_("qfixdrift requires only one of -a or -r"))
         patches = repo.mq.applied
     else:
         if not rev:
-            raise util.Abort(_("qundrift requires either -a or -r"))
+            raise util.Abort(_("qfixdrift requires either -a or -r"))
         patches = []
         for r in cmdutil.revrange(repo, rev):
             patch = None
@@ -66,9 +66,9 @@ def qundrift(ui, repo, *args, **opts):
         patchf.close()
 
 cmdtable = {
-    "qundrift":
-    (qundrift,
+    "qfixdrift":
+    (qfixdrift,
      [('a', 'applied', None, _('rewrite all applied patches')),
       ('r', 'rev', [], _('revision(s) to rewrite'))],
-     _('hg qundrift [ -a | -r REV | -r REV:REV ]'))
+     _('hg qfixdrift [ -a | -r REV | -r REV:REV ]'))
 }
