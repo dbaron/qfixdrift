@@ -37,7 +37,7 @@ def qundrift(ui, repo, *args, **opts):
             patch = None
             for qp in repo.mq.applied:
                 # qr.rev is hex and r is an integer
-                if repo.changelog.rev(bin(qp.rev)) == r:
+                if bin(qp.rev) == repo.changelog.node(r):
                     patch = qp
                     break;
             if patch is None:
