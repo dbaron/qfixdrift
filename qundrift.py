@@ -17,12 +17,23 @@ It provides a single command: qundrift
 '''
 
 from mercurial.i18n import _
-from mercurial.node import bin
+from mercurial.node import bin, short
 from mercurial import util, cmdutil
 from hgext.mq import patchheader
 
 def qundrift(ui, repo, *args, **opts):
-    """rewrite given patches to clean up patch drift"""
+    """rewrite given patches to clean up patch drift
+
+    Rewrite the specified patches so their diff matches the context in
+    which they are currently applied.
+
+    The patches to rewrite must be specified with -a or -r:
+
+     * with -a, all applied patches are rewritten
+
+     * with -r, the given revisions (which must be applied mq patches)
+       are rewritten
+    """
     applied = opts.get('applied')
     rev = opts.get('rev')
     if applied:
@@ -41,10 +52,11 @@ def qundrift(ui, repo, *args, **opts):
                     patch = qp
                     break;
             if patch is None:
-                raise util.Abort(_("revision in range is not applied"))
+                raise util.Abort(_("revision %s is not an applied mq patch") %
+                                 short(repo.changelog.node(r)))
             patches.append(patch)
     for p in patches:
-        print "updating patch " + p.name
+        repo.ui.write(_("updating patch %s\n") % p.name)
         ph = patchheader(repo.mq.join(p.name))
         patchf = repo.mq.opener(p.name, 'w')
         comments = str(ph)
