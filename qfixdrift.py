@@ -56,6 +56,8 @@ def qfixdrift(ui, repo, *args, **opts):
                                  short(repo.changelog.node(r)))
             patches.append(patch)
     for p in patches:
+        if p.name == ".hg.patches.merge.marker":
+            continue
         repo.ui.write(_("updating patch %s\n") % p.name)
         ph = patchheader(repo.mq.join(p.name))
         patchf = repo.mq.opener(p.name, 'w')
