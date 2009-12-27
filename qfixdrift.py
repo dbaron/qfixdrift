@@ -64,7 +64,8 @@ def qfixdrift(ui, repo, *args, **opts):
         comments = str(ph)
         if comments:
             patchf.write(comments)
-        repo.mq.printdiff(repo, repo.mq.qparents(repo, bin(p.rev)), p.rev, fp=patchf)
+        repo.mq.printdiff(repo, repo.mq.qparents(repo, bin(p.rev)), p.rev,
+                          fp=patchf)
         patchf.close()
 
 cmdtable = {
