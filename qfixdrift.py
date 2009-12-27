@@ -45,7 +45,7 @@ def qfixdrift(ui, repo, *args, **opts):
             raise util.Abort(_("qfixdrift requires either -a or -r"))
         def patch_for_rev(r):
             for qp in repo.mq.applied:
-                # qr.rev is hex and r is an integer
+                # qp.rev is hex and r is an integer
                 if bin(qp.rev) == repo.changelog.node(r):
                     return qp
             raise util.Abort(_("revision %s is not an applied mq patch") %
