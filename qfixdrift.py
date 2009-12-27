@@ -43,18 +43,14 @@ def qfixdrift(ui, repo, *args, **opts):
     else:
         if not rev:
             raise util.Abort(_("qfixdrift requires either -a or -r"))
-        patches = []
-        for r in cmdutil.revrange(repo, rev):
-            patch = None
+        def patch_for_rev(r):
             for qp in repo.mq.applied:
                 # qr.rev is hex and r is an integer
                 if bin(qp.rev) == repo.changelog.node(r):
-                    patch = qp
-                    break;
-            if patch is None:
-                raise util.Abort(_("revision %s is not an applied mq patch") %
-                                 short(repo.changelog.node(r)))
-            patches.append(patch)
+                    return qp
+            raise util.Abort(_("revision %s is not an applied mq patch") %
+                             short(repo.changelog.node(r)))
+        patches = map(patch_for_rev, cmdutil.revrange(repo, rev))
     for p in patches:
         if p.name == ".hg.patches.merge.marker":
             continue
