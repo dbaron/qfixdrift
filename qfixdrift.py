@@ -5,6 +5,8 @@
 #
 # This software may be used and distributed according to the terms of the
 # GNU General Public License version 2, incorporated herein by reference.
+#
+# This version is compatible with Mercurial 1.4.2.
 
 '''clean up patch drift in an mq patch queue
 
@@ -60,7 +62,10 @@ def qfixdrift(ui, repo, *args, **opts):
         comments = str(ph)
         if comments:
             patchf.write(comments)
-        repo.mq.printdiff(repo, repo.mq.qparents(repo, bin(p.rev)), p.rev,
+        repo.mq.printdiff(repo=repo,
+                          diffopts=repo.mq.diffopts(patchfn=p.name),
+                          node1=repo.mq.qparents(repo, bin(p.rev)),
+                          node2=p.rev,
                           fp=patchf)
         patchf.close()
 
