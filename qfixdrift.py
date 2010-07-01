@@ -6,7 +6,7 @@
 # This software may be used and distributed according to the terms of the
 # GNU General Public License version 2, incorporated herein by reference.
 #
-# This version is compatible with Mercurial 1.4.2, 1.5, 1.5.1, and 1.5.2.
+# This version is compatible with Mercurial 1.6.
 
 '''clean up patch drift in an mq patch queue
 
@@ -19,7 +19,7 @@ It provides a single command: qfixdrift
 '''
 
 from mercurial.i18n import _
-from mercurial.node import bin, short
+from mercurial.node import hex, short
 from mercurial import util, cmdutil
 from hgext.mq import patchheader
 
@@ -47,8 +47,8 @@ def qfixdrift(ui, repo, *args, **opts):
             raise util.Abort(_("qfixdrift requires either -a or -r"))
         def patch_for_rev(r):
             for qp in repo.mq.applied:
-                # qp.rev is hex and r is an integer
-                if bin(qp.rev) == repo.changelog.node(r):
+                # qp.node is the binary hash and r is an integer
+                if qp.node == repo.changelog.node(r):
                     return qp
             raise util.Abort(_("revision %s is not an applied mq patch") %
                              short(repo.changelog.node(r)))
@@ -64,8 +64,8 @@ def qfixdrift(ui, repo, *args, **opts):
             patchf.write(comments)
         repo.mq.printdiff(repo=repo,
                           diffopts=repo.mq.diffopts(patchfn=p.name),
-                          node1=repo.mq.qparents(repo, bin(p.rev)),
-                          node2=p.rev,
+                          node1=repo.mq.qparents(repo, p.node),
+                          node2=hex(p.node),
                           fp=patchf)
         patchf.close()
 
