@@ -6,7 +6,7 @@
 # This software may be used and distributed according to the terms of the
 # GNU General Public License version 2, incorporated herein by reference.
 #
-# This version is compatible with Mercurial 1.6.
+# This version is compatible with Mercurial 1.6 through 1.8.4.
 
 '''clean up patch drift in an mq patch queue
 
