@@ -5,8 +5,6 @@
 #
 # This software may be used and distributed according to the terms of the
 # GNU General Public License version 2, incorporated herein by reference.
-#
-# This version is compatible with Mercurial 1.9 through 1.9.1.
 
 '''clean up patch drift in an mq patch queue
 
@@ -69,6 +67,7 @@ def qfixdrift(ui, repo, *args, **opts):
                           fp=patchf)
         patchf.close()
 
+testedwith = '1.9 2.0 2.1 2.5 2.6 2.9 3.1 3.2 3.3 3.5 3.6'
 cmdtable = {
     "qfixdrift":
     (qfixdrift,
