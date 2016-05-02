@@ -18,9 +18,17 @@ It provides a single command: qfixdrift
 
 from mercurial.i18n import _
 from mercurial.node import hex, short
-from mercurial import util, scmutil
+from mercurial import util, cmdutil, scmutil
 from hgext.mq import patchheader
 
+testedwith = '3.8.1'
+cmdtable = {}
+command = cmdutil.command(cmdtable)
+
+@command("qfixdrift",
+         [('a', 'applied', None, _('rewrite all applied patches')),
+          ('r', 'rev', [], _('revision(s) to rewrite'))],
+         _('hg qfixdrift [ -a | -r REV | -r REV:REV ]'))
 def qfixdrift(ui, repo, *args, **opts):
     """rewrite given patches to clean up patch drift
 
@@ -66,12 +74,3 @@ def qfixdrift(ui, repo, *args, **opts):
                           node2=hex(p.node),
                           fp=patchf)
         patchf.close()
-
-testedwith = '1.9 2.0 2.1 2.5 2.6 2.9 3.1 3.2 3.3 3.5 3.6'
-cmdtable = {
-    "qfixdrift":
-    (qfixdrift,
-     [('a', 'applied', None, _('rewrite all applied patches')),
-      ('r', 'rev', [], _('revision(s) to rewrite'))],
-     _('hg qfixdrift [ -a | -r REV | -r REV:REV ]'))
-}
