@@ -30,10 +30,10 @@ if util.safehasattr(registrar, 'command'):
 else:
     command = cmdutil.command(cmdtable)
 
-@command("qfixdrift",
-         [('a', 'applied', None, _('rewrite all applied patches')),
-          ('r', 'rev', [], _('revision(s) to rewrite'))],
-         _('hg qfixdrift [ -a | -r REV | -r REV:REV ]'))
+@command(b"qfixdrift",
+         [(b'a', b'applied', None, _(b'rewrite all applied patches')),
+          (b'r', b'rev', [], _(b'revision(s) to rewrite'))],
+         _(b'hg qfixdrift [ -a | -r REV | -r REV:REV ]'))
 def qfixdrift(ui, repo, *args, **opts):
     """rewrite given patches to clean up patch drift
 
